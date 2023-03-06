@@ -1,5 +1,6 @@
 package br.com.model;
 
+import br.com.exception.ExplosaoException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,5 +53,39 @@ public class Campo {
 
       Caso contrário, retorna false e não adiciona nenhum vizinho a lista.
     */
+  }
+  void alternarMarcacao() {
+    if(!aberto) {
+      this.marcado = !this.marcado;
+    }
+  }
+
+  boolean abrir() {
+    if(!this.marcado && !this.aberto) {
+      this.aberto = true;
+
+      //Se o campo clicado estiver minado, lança uma exceção e o sistema é interrompido, podendo ser
+      //reiniciado.
+      if(this.minado) {
+        throw new ExplosaoException();
+      }
+
+      //Se ao redor estiver seguro, chama o método abrir para cada item da lista.
+      if(vizinhancaSegura()) {
+        vizinhos.forEach(Campo::abrir);
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  boolean vizinhancaSegura() {
+    /*
+      Utilizando stream e um predicado dentro do noneMatch para verificar que nenhum vizinho da
+      lista tem o atributo minado sendo true. Caso esteja false, ele adiciona ao novo stream e
+      retorna essa nova lista de itens com o atributo minado false.
+    */
+    return vizinhos.stream().noneMatch(v -> v.minado);
   }
 }
