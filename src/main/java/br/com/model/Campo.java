@@ -88,4 +88,71 @@ public class Campo {
     */
     return vizinhos.stream().noneMatch(v -> v.minado);
   }
+
+  public boolean isMarcado(){
+    return this.marcado;
+  }
+
+  public boolean isAberto(){
+    return this.aberto;
+  }
+
+  public boolean isMinado(){
+    return this.minado;
+  }
+
+  public void setMarcado(boolean marcado) {
+    this.marcado = marcado;
+  }
+
+  public void setMinado(boolean minado) {
+    this.minado = minado;
+  }
+
+  public void setAberto(boolean aberto) {
+    this.aberto = aberto;
+  }
+
+  public int getCOLUNA() {
+    return COLUNA;
+  }
+
+  public int getLINHA() {
+    return LINHA;
+  }
+
+  //Se o campo está marcado e minado ou não minado e aberto, o objetivo foi alcançado,
+  //Para verificar se o objetivo do jogo foi alcançado, deverá ser levado em consideração todos os
+  //campos com o  objetivo alcançado.
+  boolean objetivoAlcancado() {
+    boolean desvendado = !minado && aberto;
+    boolean protegido = minado && marcado;
+    return desvendado || protegido;
+  }
+
+  //Retorna a qtd de minas no jogo
+  long minasNaVizinhanca() {
+    return vizinhos.stream().filter(v -> v.minado).count();
+  }
+
+  void reiniciar() {
+    this.aberto = false;
+    this.marcado = false;
+    this.minado = false;
+  }
+
+  @Override
+  public String toString() {
+    if(marcado) {
+      return "X";
+    } else if(aberto && minado) {
+      return "*";
+    } else if(aberto && minasNaVizinhanca() > 0) {
+      return Long.toString(minasNaVizinhanca());
+    } else if(aberto) {
+      return " ";
+    } else {
+      return "?";
+    }
+  }
 }
