@@ -108,4 +108,8 @@ public class Tabuleiro {
     }
     return sb.toString();
   }
+
+  public List<Campo> getCampos() {
+    return campos;
+  }
 }
