@@ -75,6 +75,7 @@ public class TabuleiroConsole {
       }
       System.out.println("Você Gahou!");
     } catch (ExplosaoException ee) {
+      System.out.println(tabuleiro);
       System.out.println("BOOOOOOOM!!!!!!");
       System.out.println("Você perdeu!");
     }

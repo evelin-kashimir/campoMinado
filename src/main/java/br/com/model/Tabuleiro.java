@@ -1,5 +1,6 @@
 package br.com.model;
 
+import br.com.exception.ExplosaoException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -22,9 +23,14 @@ public class Tabuleiro {
   }
 
   public void abrirCampo(int linha, int coluna) {
-    campos.stream()
-        .filter(c -> c.getLINHA() == linha && c.getCOLUNA() == coluna)
-        .findFirst().ifPresent(Campo::abrir); //trás o primeiro e se for presente, executa a função abrir
+    try {
+      campos.stream()
+          .filter(c -> c.getLINHA() == linha && c.getCOLUNA() == coluna)
+          .findFirst().ifPresent(Campo::abrir); //trás o primeiro e se for presente, executa a função abrir
+    } catch (ExplosaoException ee) {
+      campos.forEach(campo -> campo.setAberto(true)); //iterando sobre todos os campos e revelando todos os valores
+      throw ee; //lançando exceção para a próxima classe
+    }
   }
 
   public void marcarCampo(int linha, int coluna) {
@@ -59,9 +65,9 @@ public class Tabuleiro {
     Predicate<Campo> minado = Campo::isMinado; //verificando todos os campos com o atributo minado true;
 
     do {
-      minasArmadas = campos.stream().filter(minado).count();
       int aleatorio = (int) (Math.random() * campos.size()); //gerando um valor randomico baseado no tamanho da lista
       campos.get(aleatorio).setMinado(true);
+      minasArmadas = campos.stream().filter(minado).count();
     } while (minasArmadas < minas);
   }
 
