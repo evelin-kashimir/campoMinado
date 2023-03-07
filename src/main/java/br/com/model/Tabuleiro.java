@@ -21,6 +21,18 @@ public class Tabuleiro {
     distribuirMinas();
   }
 
+  public void abrirCampo(int linha, int coluna) {
+    campos.stream()
+        .filter(c -> c.getLINHA() == linha && c.getCOLUNA() == coluna)
+        .findFirst().ifPresent(Campo::abrir); //trás o primeiro e se for presente, executa a função abrir
+  }
+
+  public void marcarCampo(int linha, int coluna) {
+    campos.stream()
+        .filter(c -> c.getLINHA() == linha && c.getCOLUNA() == coluna)
+        .findFirst().ifPresent(Campo::alternarMarcacao); //trás o primeiro e se for presente, executa a função marcar
+  }
+
   //Cria uma matriz de Campos
   private void gerarCampos() {
     for(int linha = 0; linha < linhas; linha++) {
@@ -63,5 +75,21 @@ public class Tabuleiro {
     distribuirMinas();
   }
 
+  @Override
+  public String toString() {
+    //Quando houver uma necessidade grande de concatenação, a melhor opção é usar a classe stringBuilder
+    StringBuilder sb = new StringBuilder();
+    int i = 0;
 
+    for(int linha = 0; linha < linhas; linha++){
+      for(int coluna = 0; coluna < colunas; coluna++){
+        sb.append(" ");
+        sb.append(campos.get(i)); //imprime o valor contente na posição do indice especificado
+        sb.append(" ");
+        i++;
+      }
+      sb.append("\n");
+    }
+    return sb.toString();
+  }
 }
