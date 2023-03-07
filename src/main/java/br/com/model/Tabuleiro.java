@@ -86,8 +86,18 @@ public class Tabuleiro {
     //Quando houver uma necessidade grande de concatenação, a melhor opção é usar a classe stringBuilder
     StringBuilder sb = new StringBuilder();
     int i = 0;
+    sb.append("  ");
+      for(int c = 0; c < colunas; c++) {
+        sb.append(" ");
+        sb.append(c);
+        sb.append(" ");
+      }
+      sb.append("\n");
 
     for(int linha = 0; linha < linhas; linha++){
+      sb.append(linha);
+      sb.append(" ");
+
       for(int coluna = 0; coluna < colunas; coluna++){
         sb.append(" ");
         sb.append(campos.get(i)); //imprime o valor contente na posição do indice especificado
